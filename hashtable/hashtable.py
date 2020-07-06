@@ -22,6 +22,8 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        self.capacity = capacity
+        self.storage = [None] * self.capacity 
 
 
     def get_num_slots(self):
@@ -54,6 +56,21 @@ class HashTable:
         """
 
         # Your code here
+        fnvHash = 14695981039346656037
+        for letter in key: 
+            fnvHash = fnvHash * 1099511628211
+            fnvHash = fnvHash + ord(letter)
+        return fnvHash
+
+
+# algorithm fnv-1 is
+#     hash := FNV_offset_basis do
+
+#     for each byte_of_data to be hashed
+#         hash := hash × FNV_prime
+#         hash := hash XOR byte_of_data
+
+#     return hash 
 
 
     def djb2(self, key):
@@ -63,6 +80,7 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
+        
 
 
     def hash_index(self, key):
@@ -70,8 +88,8 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity
+        # return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """

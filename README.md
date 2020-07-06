@@ -1,4 +1,4 @@
-pull request: 
+pull request: https://github.com/zeravenyoej/cs-module-project-hash-tables/pull/1
 # Hash Tables
 
 ## Day 1
