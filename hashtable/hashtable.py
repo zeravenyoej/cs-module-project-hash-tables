@@ -100,10 +100,23 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        index_in_list  = self.hash_index(key)
-        if index_in_list <= self.capacity:
-          self.storage[index_in_list] = value
+        # index_in_list  = self.hash_index(key)
+        # if index_in_list is not None:
+        #   self.storage[index_in_list] = value
+        
 
+        node = HashTableEntry(key, value)   # make new Node, so that there's access to Next
+        i = self.hash_index(node.key)       # get the index in the array
+        if self.storage[i] is not None:     # check if that index is occupied. If index is OCCUPIED
+            cur = self.storage[i]           # make cur point at the node that's in that index
+            while cur.next is not None:     # loop through LinkedList at that index until you get to the tail
+                if cur.key == key:          # check to see if the keys already exist. if it does...
+                    cur.value = value       # overide the value and break out of al lthe things
+                    return 
+                cur = cur.next
+            cur.next = node                 # make the tail point towards the new node 
+        else:                               # if index is EMPTY...
+            self.storage[i] = node          # ...insert the new node at that index
 
 
     def delete(self, key):
@@ -114,13 +127,31 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-        index_in_list = self.hash_index(key)
-        if index_in_list <= self.capacity:
-            self.storage[index_in_list] = None
-        else:
-            print("Key was not found")
+        # # Your code here
+        # index_in_list = self.hash_index(key)
+        # if index_in_list is not None:
+        #     self.storage[index_in_list] = None
+        # else:
+        #     print("Key was not found")
 
+        i = self.hash_index(node.key)       # get the index in the array
+        if self.storage[i] is not None:     # if there's something at that index
+            cur = self.storage[i]           # make cur point at the node that's in that index
+            while cur.key != key:     
+                if cur.next is not None:
+                    cur = cur.next
+                else: 
+                    print("key was not found")
+                    return 
+            # if keys match....the list is only 1, or it's the tail
+            if cur.next is not None:
+                prev = cur
+                cur = cur.next 
+                prev.next
+
+                
+        else:                               # if there's nothing at that index
+            print("Key was not found")      # say so
 
     def get(self, key):
         """
@@ -131,11 +162,23 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        index_in_list = self.hash_index(key)
-        if index_in_list <= self.capacity:
-            return self.storage[index_in_list]
-        else:
-            return None
+        # index_in_list = self.hash_index(key)
+        # if index_in_list is not None:
+        #     return self.storage[index_in_list]
+        # else:
+        #     return None
+
+        i = self.hash_index(key)            # get the index
+        if self.storage[i] is not None:     # if that index is OCCUPIED...
+            cur = self.storage[i]           # set a cur pointer at the node in that occupied index
+            while cur.key != key:           # check if the key's don't match
+                if cur.next is not None:    # check if there's something to point to, if so
+                    cur = cur.next          # then point to it
+                else:                       # if not, 
+                    return None             # return Nothing
+            return cur.value                # if the keys match, the while loop won't run and you'll return the value
+        else:                               # otherwise, if the index is empty...
+            return None                     # return nothing
 
     def resize(self, new_capacity):
         """
@@ -182,3 +225,77 @@ if __name__ == "__main__":
         print(ht.get(f"line_{i}"))
 
     print("")
+
+
+
+
+# hash_table = [None] * 8   # 8 slots, all initiailized to None
+# def my_hash(s):
+#     sb = s.encode()  # Get the UTF-8 bytes for the string
+#     total = 0
+#     for b in sb:
+#         total += b
+#         total &= 0xffffffff  # clamp to 32 bits
+#     return total
+# def hash_index(key):
+#     h = my_hash(key)
+#     return h % len(hash_table)
+# def put(key, val):
+#     i = hash_index(key)
+#     if hash_table[i] != None:
+#         print(f"Collision! Overwriting {repr(hash_table[i])}!")
+#     hash_table[i] = val
+# def get(key):
+#     i = hash_index(key)
+#     return hash_table[i]
+# def delete(key):
+#     i = hash_index(key)
+#     hash_table[i] = None
+# put("Hello", "Hello Value")
+# put("World", "World Value")
+
+
+# class Node:
+#     def __init__(self, value):
+#         self.value = value
+#         self.next = None
+
+# class LinkedList:
+#     def __init__(self):
+#         self.head = None
+#     def find(self, value):
+#       #start at the head
+#       #loop through the list
+#       #find value
+#       #return the node
+
+#       cur = self.head
+#       while cur is not None:
+#           if cur.value == value:
+#               return cur
+#           cur = cur.next
+#       return None
+
+#     def delete(self, value):
+#         cur = self.head
+#         if cur.value == value:
+#             self.head = cur.next
+#             return cur
+        
+#         prev = cur
+#         cur = cur.next
+
+#         while cur is not None:
+#             if cur.value == value:
+#                 prev.next = cur.next
+#                 return cur
+#             else:
+#                 prev = cur
+#                 cur = cur.next
+
+
+#     def insert_at_head(self, node):
+#         node.next = self.head
+#         self.head = node
+
+#       return None
