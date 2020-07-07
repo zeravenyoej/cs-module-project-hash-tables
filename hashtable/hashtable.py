@@ -100,6 +100,10 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        index_in_list  = self.hash_index(key)
+        if index_in_list <= self.capacity:
+          self.storage[index_in_list] = value
+
 
 
     def delete(self, key):
@@ -111,6 +115,11 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        index_in_list = self.hash_index(key)
+        if index_in_list <= self.capacity:
+            self.storage[index_in_list] = None
+        else:
+            print("Key was not found")
 
 
     def get(self, key):
@@ -122,7 +131,11 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        index_in_list = self.hash_index(key)
+        if index_in_list <= self.capacity:
+            return self.storage[index_in_list]
+        else:
+            return None
 
     def resize(self, new_capacity):
         """
