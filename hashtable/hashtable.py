@@ -106,8 +106,8 @@ class HashTable:
         #   self.storage[index_in_list] = value
         
 
-        i = self.hash_index(key)                # get the index in the array
         new_node = HashTableEntry(key, value)   # make new_node
+        i = self.hash_index(key)                # get the index in the array
         cur = self.storage[i]                   # make cur point at the node that's in that index
         if cur:                                 # check if that index is OCCUPIED...
             prev = None                         # make a prev pointer look at nothing
