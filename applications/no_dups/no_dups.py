@@ -1,5 +1,15 @@
 def no_dups(s):
-    # Your code here
+    cache = {}
+    for word in s.split():
+        if word not in cache:
+            cache[word] = "random text"
+    # answer = ""
+    # for key in cache.keys():
+    #     answer = answer + key + " "
+    # return answer
+    # print("cache: ", cache)
+    return " ".join(cache)
+    
 
 
 

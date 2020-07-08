@@ -1,5 +1,5 @@
 # Your code here
-
+cache = []
 
 def expensive_seq(x, y, z):
     # Your code here
