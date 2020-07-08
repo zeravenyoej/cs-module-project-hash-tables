@@ -24,6 +24,7 @@ class HashTable:
         # Your code here
         self.capacity = capacity
         self.storage = [None] * self.capacity 
+        self.count = 0
 
 
     def get_num_slots(self):
@@ -105,19 +106,22 @@ class HashTable:
         #   self.storage[index_in_list] = value
         
 
-        node = HashTableEntry(key, value)   # make new Node, so that there's access to Next
-        i = self.hash_index(node.key)       # get the index in the array
-        if self.storage[i] is not None:     # check if that index is occupied. If index is OCCUPIED
-            cur = self.storage[i]           # make cur point at the node that's in that index
-            while cur.next is not None:     # loop through LinkedList at that index until you get to the tail
-                if cur.key == key:          # check to see if the keys already exist. if it does...
-                    cur.value = value       # overide the value and break out of al lthe things
-                    return 
+        i = self.hash_index(key)                # get the index in the array
+        new_node = HashTableEntry(key, value)   # make new_node
+        cur = self.storage[i]                   # make cur point at the node that's in that index
+        if cur:                                 # check if that index is OCCUPIED...
+            prev = None                         # make a prev pointer look at nothing
+            while cur:                          # loop through LinkedList to check if key already exists
+                if cur.key == key:              # check if that key already exists. if it does...
+                    cur.value = value           # overide the value 
+                    return                      # and break out of all the things
+                prev = cur                      # if the key does NOT already exist... point the prev to cur, and cur to next.
                 cur = cur.next
-            cur.next = node                 # make the tail point towards the new node 
-        else:                               # if index is EMPTY...
-            self.storage[i] = node          # ...insert the new node at that index
-
+            prev.next = new_node                # once out of while loop, it means there is no match already, so insert new_node at the end 
+            self.count +=1
+        else:                                   # if index is EMPTY...
+            self.storage[i] = new_node          # ...insert the new node at that index
+            self.count +=1
 
     def delete(self, key):
         """
@@ -134,24 +138,18 @@ class HashTable:
         # else:
         #     print("Key was not found")
 
-        i = self.hash_index(node.key)       # get the index in the array
-        if self.storage[i] is not None:     # if there's something at that index
-            cur = self.storage[i]           # make cur point at the node that's in that index
-            while cur.key != key:     
-                if cur.next is not None:
-                    cur = cur.next
-                else: 
-                    print("key was not found")
-                    return 
-            # if keys match....the list is only 1, or it's the tail
-            if cur.next is not None:
-                prev = cur
-                cur = cur.next 
-                prev.next
-
-                
-        else:                               # if there's nothing at that index
-            print("Key was not found")      # say so
+        i = self.hash_index(key)            # get the index in the array
+        cur = self.storage[i]               # set up cur pointer
+        prev = None                         # set up prev pointer
+        while cur:                          # loop will run as long as cur is real
+            if cur.key == key:              # check if a match. if so...
+                if prev is None:            # check if match is head. if so...
+                    self.storage[i] = cur.next # essentially make the head the next node instead
+                else:                       # if match is not the head...
+                    prev.next = cur.next    # make prev node point to the next node, eseentially deleting cur 
+            prev = cur                      # if cur is not a match, update pointers and keep going
+            cur = cur.next 
+            self.count -=1
 
     def get(self, key):
         """
