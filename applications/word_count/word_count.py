@@ -1,7 +1,17 @@
 def word_count(s):
-    # Your code here
+    cache = {}
+    removed_letters = ['"', ':', ';', ',', '.', '-', '+', '=', '/', '\\', "|", '[', ']', '{', '}', '(', ')', '*', '^', '&']
+    for letter in removed_letters:
+        s = s.replace(letter, "")
 
+    # print("String: ", s)
+    for word in s.split():
+        if word.lower() not in cache:
+            cache[word.lower()] = 1
+        else: 
+            cache[word.lower()] += 1
 
+    return cache
 
 if __name__ == "__main__":
     print(word_count(""))

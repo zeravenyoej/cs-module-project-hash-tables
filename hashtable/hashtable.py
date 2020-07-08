@@ -38,6 +38,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return self.capacity
 
 
     def get_load_factor(self):
@@ -47,6 +48,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return self.count / self.capacity
 
 
     def fnv1(self, key):
@@ -146,7 +148,7 @@ class HashTable:
                 if prev is None:            # check if match is head. if so...
                     self.storage[i] = cur.next # essentially make the head the next node instead
                 else:                       # if match is not the head...
-                    prev.next = cur.next    # make prev node point to the next node, eseentially deleting cur 
+                    prev.next = cur.next    # make prev node points to the next node, eseentially deleting cur 
             prev = cur                      # if cur is not a match, update pointers and keep going
             cur = cur.next 
             self.count -=1
@@ -186,7 +188,16 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        copy = self.storage                         # make a copy of storage to hold onto existing nodes
+        self.capacity = new_capacity                # update capacity according to input
+        self.storage = [None] * self.capacity       # erase nodes in storage
+        self.count = 0                              # reset count to zero
+        for i in range(len(copy)):                  # for every previously existing node                              
+            cur = copy[i]                           # set up cur pointer
+            while cur:                              # as long as the node is real
+                self.put(cur.key, cur.value)        # put the cur node into self.storage
+                cur = cur.next                      # update pointer
+        return self.storage
 
 
 if __name__ == "__main__":
@@ -223,77 +234,3 @@ if __name__ == "__main__":
         print(ht.get(f"line_{i}"))
 
     print("")
-
-
-
-
-# hash_table = [None] * 8   # 8 slots, all initiailized to None
-# def my_hash(s):
-#     sb = s.encode()  # Get the UTF-8 bytes for the string
-#     total = 0
-#     for b in sb:
-#         total += b
-#         total &= 0xffffffff  # clamp to 32 bits
-#     return total
-# def hash_index(key):
-#     h = my_hash(key)
-#     return h % len(hash_table)
-# def put(key, val):
-#     i = hash_index(key)
-#     if hash_table[i] != None:
-#         print(f"Collision! Overwriting {repr(hash_table[i])}!")
-#     hash_table[i] = val
-# def get(key):
-#     i = hash_index(key)
-#     return hash_table[i]
-# def delete(key):
-#     i = hash_index(key)
-#     hash_table[i] = None
-# put("Hello", "Hello Value")
-# put("World", "World Value")
-
-
-# class Node:
-#     def __init__(self, value):
-#         self.value = value
-#         self.next = None
-
-# class LinkedList:
-#     def __init__(self):
-#         self.head = None
-#     def find(self, value):
-#       #start at the head
-#       #loop through the list
-#       #find value
-#       #return the node
-
-#       cur = self.head
-#       while cur is not None:
-#           if cur.value == value:
-#               return cur
-#           cur = cur.next
-#       return None
-
-#     def delete(self, value):
-#         cur = self.head
-#         if cur.value == value:
-#             self.head = cur.next
-#             return cur
-        
-#         prev = cur
-#         cur = cur.next
-
-#         while cur is not None:
-#             if cur.value == value:
-#                 prev.next = cur.next
-#                 return cur
-#             else:
-#                 prev = cur
-#                 cur = cur.next
-
-
-#     def insert_at_head(self, node):
-#         node.next = self.head
-#         self.head = node
-
-#       return None
